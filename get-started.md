@@ -96,7 +96,7 @@ import { Action } from './'
 
 export default (action: Action) => ({
   changeTitle: action()
-    .map(event => event.target.value)
+    .map((effects, event) => event.target.value)
     .mutation((state, title) => state.title = title)
 })
 
