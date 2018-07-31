@@ -26,13 +26,14 @@ export const connect = app.connect
 
 {% code-tabs-item title="app/index.ts" %}
 ```typescript
-import App, { TContext, IAction, TConnect } from 'overmind/$VIEW'
+import App, { TEffects, TAction, TConnect } from 'overmind/$VIEW'
 import state from './state'
 import actions from './actions'
+import * as effects from './effects'
 
-export type Context = TContext<typeof state>
+export type Effects = TEffects<typeof state, typeof effects>
 
-export type Action = IAction<typeof state, Context>
+export type Action = TAction<typeof state, Effects>
 
 const app = new App({
   state,
@@ -103,7 +104,43 @@ export default (action: Action) => ({
 {% endcode-tabs-item %}
 {% endcode-tabs %}
 
-### 5. Connect to views
+### 5. Define the effects
+
+
+{% code-tabs %}
+{% code-tabs-item title="app/actions.ts" %}
+```javascript
+export const say = {
+  hello: (name: string) => ({ hello: `Hello ${name}` }),
+}
+
+export const api = {
+  getPosts: () =>
+    fetch('https://jsonplaceholder.typicode.com/posts').then((response) =>
+      response.json()
+    ),
+}
+```
+{% endcode-tabs-item %}
+
+{% code-tabs-item title="app/actions.ts" %}
+```typescript
+export const say = {
+  hello: (name: string) => ({ hello: `Hello ${name}` }),
+}
+
+export const api = {
+  getPosts: () =>
+    fetch('https://jsonplaceholder.typicode.com/posts').then((response) =>
+      response.json()
+    ),
+}
+
+```
+{% endcode-tabs-item %}
+{% endcode-tabs %}
+
+### 6. Connect to views
 
 {% tabs %}
 {% tab title="React" %}
